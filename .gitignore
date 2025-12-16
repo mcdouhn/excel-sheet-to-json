@@ -11,5 +11,4 @@ coverage/
 *.swp
 Thumbs.db
 
-package-lock.json
 .env
