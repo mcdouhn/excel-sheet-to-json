@@ -1,12 +1,26 @@
 name: size
 on: [pull_request]
+
 jobs:
   size:
     runs-on: ubuntu-latest
     env:
       CI_JOB_NUMBER: 1
     steps:
-      - uses: actions/checkout@v1
+      # 1. 최신 v4 버전으로 업데이트 (보안 및 성능 향상)
+      - uses: actions/checkout@v4
+
+      # 2. Node.js 환경 구축 (size-limit 실행을 위해 필요)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      # 3. 의존성 설치 (yarn.lock 기준)
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # 4. size-limit 체크 실행 (최신 버전 사용)
       - uses: andresz1/size-limit-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
