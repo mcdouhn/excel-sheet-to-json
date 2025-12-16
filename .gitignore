@@ -1,0 +1,15 @@
+*.log
+.DS_Store
+node_modules
+dist
+.vscode/
+.idea/
+*.iml
+coverage/
+*.tmp
+*.bak
+*.swp
+Thumbs.db
+
+package-lock.json
+.env
