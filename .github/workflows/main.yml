@@ -2,25 +2,31 @@ name: CI
 on: [push]
 jobs:
   build:
-    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
+    # 실행 환경 이름 출력 최적화
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ['10.x', '12.x', '14.x']
+        # 1. 지원 종료된 10, 12, 14 대신 현재 LTS인 18, 20, 22를 사용합니다.
+        node: ['18.x', '20.x', '22.x']
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
+      # 2. 최신 버전의 checkout과 setup-node를 사용합니다 (속도와 보안 향상)
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+          # 3. 별도의 외부 액션 없이도 npm/yarn 캐싱을 기본 지원합니다.
+          cache: 'yarn' 
 
-      - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
+      # 4. 외부 액션 대신 표준 명령어를 사용하는 것이 더 안정적입니다.
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Lint
         run: yarn lint
