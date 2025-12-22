@@ -8,7 +8,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -36,13 +36,16 @@
   "keywords": [
     "excel",
     "xlsx",
+    "csv",
     "parser",
     "json",
     "mapping",
     "data-processing",
     "universal",
     "spreadsheet",
-    "excel-to-json"
+    "excel-to-json",
+    "csv-to-json",
+    "spreadsheet-to-json"
   ],
   "size-limit": [
     {
