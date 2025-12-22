@@ -11,7 +11,7 @@ A TypeScript/JavaScript library that converts Excel and CSV files to JSON with c
 - ✅ **TypeScript Support**: Fully typed with complete type definitions
 - ✅ **Custom Row Selection**: Freely specify header and data start rows
 - ✅ **Custom CSV Delimiter**: Support for comma, semicolon, tab, or any custom delimiter
-- ✅ **Multiple Sheet Support**: Select specific sheets by name in Excel and Google Sheets
+- ✅ **Sheet Selection**: Select specific sheets by name in Excel and Google Sheets
 - ✅ **Automatic Type Conversion**: Optional automatic number casting
 
 ## Installation
@@ -374,25 +374,6 @@ Converts a File object to ArrayBuffer in browser environment.
 
 `Promise<ArrayBuffer>` - File data converted to ArrayBuffer
 
-#### Example
-
-```typescript
-import { parseCSV } from 'excel-sheet-to-json';
-import * as fs from 'fs';
-
-const csvBuffer = fs.readFileSync('./data.csv');
-const result = parseCSV(csvBuffer, {
-  headerStartRowNumber: 1,
-  bodyStartRowNumber: 2,
-  delimiter: ',', // CSV delimiter Optional (default: ',')
-  encoding: 'utf-8', // File encoding Optional (default: 'utf-8')
-  headerNameToKey: {
-    ['Product ID']: 'productId',
-    ['Product Name']: 'productName',
-    ['Price']: 'price',
-  },
-});
-```
 
 ### ~~`arrayBufferToBufferInClient(arrayBuffer)`~~ ⚠️ DEPRECATED
 
@@ -425,6 +406,32 @@ const result = parse(arrayBuffer, options); // ArrayBuffer works directly
 | 1002       | Mouse        | 25000   |
 | 1003       | Keyboard     | 89000   |
 
+### Parsing Excel Files (.xlsx, .xls)
+
+```typescript
+import * as fs from 'fs';
+import { parse } from 'excel-sheet-to-json';
+
+// Read Excel file
+const fileBuffer = fs.readFileSync('./data.xlsx');
+
+// Configure parsing options
+const options = {
+  headerStartRowNumber: 1, // Row number where headers are located (1-based)
+  bodyStartRowNumber: 2, // Row number where data starts (1-based)
+  headerNameToKey: {
+    ['Product ID']: 'productId',
+    ['Product Name']: 'productName',
+    ['Price']: 'price',
+  },
+};
+
+// Execute parsing
+const result = parse(fileBuffer, options);
+
+console.log(result);
+
+```
 ### Output Result
 
 ```javascript
@@ -476,7 +483,7 @@ Excel과 CSV 파일을 사용자 정의 헤더 매핑을 통해 JSON으로 변�
 - ✅ **TypeScript 지원**: 완전한 타입 정의 제공
 - ✅ **커스텀 행 지정**: 헤더와 데이터 시작 행을 자유롭게 설정
 - ✅ **CSV 구분자 설정**: 쉼표, 세미콜론, 탭 등 원하는 구분자 지정 가능
-- ✅ **다중 시트 지원**: Excel과 Google Sheets에서 시트 이름으로 특정 시트 선택 가능
+- ✅ **시트 선택**: Excel과 Google Sheets에서 시트 이름으로 특정 시트 선택 가능
 - ✅ **자동 타입 변환**: 숫자 문자열을 자동으로 숫자로 변환 (선택적)
 
 ## 설치
@@ -839,25 +846,6 @@ const result = await parseGoogleSheet(
 
 `Promise<ArrayBuffer>` - ArrayBuffer로 변환된 파일 데이터
 
-#### 예제
-
-```typescript
-import { parseCSV } from 'excel-sheet-to-json';
-import * as fs from 'fs';
-
-const csvBuffer = fs.readFileSync('./data.csv');
-const result = parseCSV(csvBuffer, {
-  headerStartRowNumber: 1,
-  bodyStartRowNumber: 2,
-  delimiter: ',',
-  encoding: 'utf-8',
-  headerNameToKey: {
-    ['상품ID']: 'productId',
-    ['상품명칭']: 'productName',
-    ['가격']: 'price',
-  },
-});
-```
 
 ### ~~`arrayBufferToBufferInClient(arrayBuffer)`~~ ⚠️ 사용 중단됨
 
@@ -889,6 +877,34 @@ const result = parse(arrayBuffer, options); // ArrayBuffer를 직접 사용 가�
 | 1001   | 노트북   | 1500000 |
 | 1002   | 마우스   | 25000   |
 | 1003   | 키보드   | 89000   |
+
+#### Excel 파일 파싱 (.xlsx, .xls)
+
+```typescript
+import * as fs from 'fs';
+import { parse } from 'excel-sheet-to-json';
+
+// Excel 파일 읽기
+const fileBuffer = fs.readFileSync('./data.xlsx');
+
+// 파싱 옵션 설정
+const options = {
+  sheetName: 'Sheet1', // 선택사항: 시트 이름 지정 (기본값: 첫 번째 시트)
+  headerStartRowNumber: 1, // 헤더가 있는 행 번호 (1-based)
+  bodyStartRowNumber: 2, // 데이터가 시작되는 행 번호 (1-based)
+  castNumber: true, // 선택사항: 숫자 문자열을 자동으로 숫자로 변환 (기본값: true)
+  headerNameToKey: {
+    ['상품ID']: 'productId',
+    ['상품명칭']: 'productName',
+    ['가격']: 'price',
+  },
+};
+
+// 파싱 실행
+const result = parse(fileBuffer, options);
+
+console.log(result);
+```
 
 ### 출력 결과
 
