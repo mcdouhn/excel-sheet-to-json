@@ -19,6 +19,7 @@ A TypeScript/JavaScript library that converts Excel and CSV files to JSON with c
 - ✅ **Custom CSV Delimiter**: Support for comma, semicolon, tab, or any custom delimiter
 - ✅ **Sheet Selection**: Select specific sheets by name in Excel and Google Sheets
 - ✅ **Automatic Type Conversion**: Optional automatic number casting
+- ✅ **Order Preservation**: Output field order follows `headerNameToKey` definition order
 
 ## Installation
 
@@ -462,6 +463,7 @@ console.log(result);
 - By default, the first sheet of Excel files is processed (you can specify a sheet using `sheetName` option)
 - For Google Sheets, you must specify the `sheetName` in options
 - Columns not mapped in `headerNameToKey` will not be included in the result
+- **Output field order is guaranteed to match the definition order of `headerNameToKey`** (not the source file column order)
 - Empty rows (rows with all cells empty) are automatically filtered out
 - Row numbers start from 1 (same as Excel row numbers)
 - Numeric strings are automatically converted to numbers by default (disable with `castNumber: false`)
@@ -497,6 +499,7 @@ Excel과 CSV 파일을 사용자 정의 헤더 매핑을 통해 JSON으로 변�
 - ✅ **CSV 구분자 설정**: 쉼표, 세미콜론, 탭 등 원하는 구분자 지정 가능
 - ✅ **시트 선택**: Excel과 Google Sheets에서 시트 이름으로 특정 시트 선택 가능
 - ✅ **자동 타입 변환**: 숫자 문자열을 자동으로 숫자로 변환 (선택적)
+- ✅ **순서 보장**: 출력 필드 순서는 `headerNameToKey` 정의 순서를 따름
 
 ## 설치
 
@@ -942,6 +945,7 @@ console.log(result);
 - 기본적으로 Excel 파일의 첫 번째 시트가 처리됩니다 (`sheetName` 옵션으로 특정 시트 지정 가능)
 - Google Sheets의 경우 options에 `sheetName`을 반드시 지정해야 합니다
 - `headerNameToKey`에 매핑되지 않은 열은 결과에 포함되지 않습니다
+- **출력 필드 순서는 `headerNameToKey`의 정의 순서를 따라 보장됩니다** (원본 파일의 열 순서가 아님)
 - 빈 행(모든 셀이 비어있는 행)은 자동으로 제외됩니다
 - 행 번호는 1부터 시작합니다 (Excel 행 번호와 동일)
 - 숫자 문자열은 기본적으로 자동으로 숫자로 변환됩니다 (`castNumber: false`로 비활성화 가능)
