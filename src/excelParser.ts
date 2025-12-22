@@ -14,7 +14,6 @@ export function parse(
 ): ParseResult {
   // 1. Buffer 읽기 및 워크북 생성
   const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
-  console.log(workbook.SheetNames);
 
   // 2. 시트 이름 결정 (options.sheetName이 있으면 사용, 없으면 첫 번째 시트)
   let sheetName: string;

@@ -1,5 +1,11 @@
 # excel-sheet-to-json
 
+*Read this in other languages: [English](#english) | [한국어](#korean)*
+
+---
+
+## English
+
 A TypeScript/JavaScript library that converts Excel and CSV files to JSON with custom header mapping. Works in both Node.js and browser environments.
 
 ## Features
@@ -471,6 +477,12 @@ Issues and Pull Requests are always welcome!
 ## Author
 
 Mcdouhn
+
+---
+
+## Korean
+
+*Read this in other languages: [English](#english) | [한국어](#korean)*
 
 Excel과 CSV 파일을 사용자 정의 헤더 매핑을 통해 JSON으로 변환하는 TypeScript/JavaScript 라이브러리입니다. Node.js와 브라우저 환경 모두에서 사용할 수 있습니다.
 

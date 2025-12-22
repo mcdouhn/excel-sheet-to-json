@@ -11,8 +11,8 @@ export interface ParseResult {
 
 // Excel 파싱 옵션
 export interface ParseOptions {
-  headerStartRowNumber: number; // 1-based
-  bodyStartRowNumber: number; // 1-based
+  headerStartRowNumber?: number; // 1-based
+  bodyStartRowNumber?: number; // 1-based
   headerNameToKey: { [excelHeaderName: string]: string }; // {'제품 명칭': 'productName'}
   castNumber?: boolean; // 숫자 변환 여부 (기본값: true)
   sheetName?: string; // 파싱할 시트 이름 (지정하지 않으면 첫 번째 시트 사용)

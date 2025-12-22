@@ -15,8 +15,8 @@ export function parseTabularData(
     return { originHeaderNames: [], fields: [], header: {}, body: [] };
   }
 
-  const headerRowIndex = headerStartRowNumber - 1;
-  const bodyRowIndex = bodyStartRowNumber - 1;
+  const headerRowIndex = headerStartRowNumber ? headerStartRowNumber - 1 : 0;
+  const bodyRowIndex = bodyStartRowNumber ? bodyStartRowNumber - 1 : 1;
 
   /* 1. 헤더 추출 */
   const rawHeaders: string[] = (rows[headerRowIndex] || []).map(h =>
