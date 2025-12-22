@@ -14,6 +14,7 @@ export interface ParseOptions {
   headerStartRowNumber: number; // 1-based
   bodyStartRowNumber: number; // 1-based
   headerNameToKey: { [excelHeaderName: string]: string }; // {'제품 명칭': 'productName'}
+  castNumber?: boolean; // 숫자 변환 여부 (기본값: true)
 }
 
 // CSV 파싱 옵션
