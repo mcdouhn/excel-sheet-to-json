@@ -3,14 +3,20 @@ import { ParseResult, ParseOptions } from './types';
 import { parseTabularData } from './parseTabularData';
 
 export async function parseGoogleSheet(
-  googleSheet: {
+  config: {
     spreadsheetId: string;
-    sheetName: string;
     apiKey: string;
   },
   options: ParseOptions
 ): Promise<ParseResult> {
-  const { spreadsheetId, sheetName, apiKey } = googleSheet;
+  const { spreadsheetId, apiKey } = config;
+  
+  // options.sheetName을 우선 사용, 없으면 googleSheet.sheetName 사용 (하위 호환성)
+  const sheetName = options.sheetName;
+  
+  if (!sheetName) {
+    throw new Error('Sheet name is required. Provide it in options.sheetName');
+  }
 
   const url =
     `https://sheets.googleapis.com/v4/spreadsheets/` +

@@ -14,8 +14,9 @@ describe('Google Sheet Parser', () => {
           apiKey: '',
         },
         {
-          headerStartRowNumber: 4,
-          bodyStartRowNumber: 4,
+          sheetName:'시트1',
+          headerStartRowNumber: 1,
+          bodyStartRowNumber: 1,
           headerNameToKey: {
             ['상품ID']: 'productId',
             ['상품명칭']: 'productName',
