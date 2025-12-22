@@ -40,6 +40,6 @@ export function fileToArrayBufferInClient(file: File): Promise<ArrayBuffer> {
  * @param arrayBuffer - 변환할 ArrayBuffer
  * @returns Buffer 객체
  */
-export function arrayBufferToBufferInClient(arrayBuffer: ArrayBuffer): Buffer {
-  return Buffer.from(arrayBuffer);
+export function arrayBufferToBufferInClient(arrayBuffer: ArrayBuffer): Uint8Array {
+  return new Uint8Array(arrayBuffer);
 }

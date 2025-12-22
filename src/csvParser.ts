@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx';
 import { ParseResult, CsvParseOptions } from './types';
 
 /**
@@ -10,63 +11,34 @@ export function parseCSV(
   fileBuffer: Buffer | ArrayBuffer,
   options: CsvParseOptions
 ): ParseResult {
-  // 1. Buffer로 변환 (ArrayBuffer인 경우)
-  let buffer: Buffer;
-  if (fileBuffer instanceof ArrayBuffer) {
-    buffer = Buffer.from(fileBuffer);
-  } else {
-    buffer = fileBuffer;
-  }
-
-  // 2. 기본 옵션 설정
-  const delimiter = options.delimiter || ',';
+  // 1. 기본 옵션 설정
   const encoding = options.encoding || 'utf-8';
+  
+  // 2. xlsx 라이브러리로 CSV 파일 읽기 (브라우저/Node.js 모두 호환)
+  const workbook = XLSX.read(fileBuffer, {
+    type: fileBuffer instanceof ArrayBuffer ? 'array' : 'buffer',
+    raw: true,
+    codepage: encoding === 'utf-8' ? 65001 : undefined, // UTF-8 codepage
+  });
 
-  // 3. CSV 문자열로 변환
-  const csvText = buffer.toString(encoding);
+  const sheetName = workbook.SheetNames[0];
+  const worksheet = workbook.Sheets[sheetName];
 
-  // 4. 줄 단위로 분리 (CRLF, LF 모두 처리)
-  const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
-
-  if (lines.length === 0) {
+  // 2. 빈 행 생략 문제 해결: range 옵션 사용
+  const sheetRef = worksheet['!ref'];
+  if (!sheetRef) {
     return { originHeaderNames: [], fields: [], header: {}, body: [] };
   }
 
-  // 5. CSV 파싱 함수 (간단한 구현 - 따옴표 처리 포함)
-  const parseCSVLine = (line: string): string[] => {
-    const result: string[] = [];
-    let current = '';
-    let inQuotes = false;
+  const arrayData: any[][] = XLSX.utils.sheet_to_json(worksheet, {
+    header: 1,
+    range: sheetRef,
+    raw: true,
+  });
 
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      const nextChar = line[i + 1];
-
-      if (char === '"') {
-        if (inQuotes && nextChar === '"') {
-          // 이스케이프된 따옴표
-          current += '"';
-          i++;
-        } else {
-          // 따옴표 토글
-          inQuotes = !inQuotes;
-        }
-      } else if (char === delimiter && !inQuotes) {
-        // 구분자 발견 (따옴표 밖)
-        result.push(current.trim());
-        current = '';
-      } else {
-        current += char;
-      }
-    }
-
-    // 마지막 필드 추가
-    result.push(current.trim());
-    return result;
-  };
-
-  // 6. 모든 줄 파싱
-  const arrayData: string[][] = lines.map(line => parseCSVLine(line));
+  if (arrayData.length === 0) {
+    return { originHeaderNames: [], fields: [], header: {}, body: [] };
+  }
 
   // 7. 인덱스 계산 (1-based -> 0-based)
   const headerRowIndex = options.headerStartRowNumber - 1;

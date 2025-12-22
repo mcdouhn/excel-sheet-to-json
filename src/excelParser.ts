@@ -8,7 +8,7 @@ import { ParseResult, ParseOptions } from './types';
  * @returns ParseResult - 파싱된 결과
  */
 export function parse(
-  fileBuffer: any, // Buffer | ArrayBuffer (타입 추정)
+  fileBuffer: Buffer | ArrayBuffer, // Buffer | ArrayBuffer (타입 추정)
   options: ParseOptions
 ): ParseResult {
   // 1. Buffer 읽기 및 워크북 생성
