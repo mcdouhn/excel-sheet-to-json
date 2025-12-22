@@ -24,4 +24,5 @@ export interface CsvParseOptions {
   headerStartRowNumber: number; // 1-based
   bodyStartRowNumber: number; // 1-based
   headerNameToKey: { [csvHeaderName: string]: string }; // {'제품 명칭': 'productName'}
+  castNumber?: boolean; // 숫자 변환 여부 (기본값: true)
 }
