@@ -1,13 +1,13 @@
 // __tests__/index.test.ts
 import * as path from 'path';
 import * as fs from 'fs'; // Node.js 테스트 환경에서는 fs 사용 가능
-import ExcelSheetToJson from '../src/index';
+import ExcelSheetToJson, { ParseOptions } from '../src/index';
 
 // 테스트 Excel 파일 경로 (예시: __tests__/test_data.xlsx)
 const testFilePath = path.join(__dirname, 'test_data.xlsx');
 let testFileBuffer: Buffer;
 
-const testOptions = {
+const testOptions: ParseOptions = {
   headerStartRowNumber: 1, // Excel 2행부터 헤더 시작 가정
   bodyStartRowNumber: 2, // Excel 3행부터 바디 시작 가정
   headerNameToKey: {
@@ -16,6 +16,7 @@ const testOptions = {
     ['가격']: 'price',
   },
   castNumber: false,
+  sheetName: '시트러스',
 };
 
 describe('ExcelSheetToJson', () => {
