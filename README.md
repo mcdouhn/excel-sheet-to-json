@@ -42,9 +42,9 @@ const options = {
   headerStartRowNumber: 1, // Row number where headers are located (1-based)
   bodyStartRowNumber: 2, // Row number where data starts (1-based)
   headerNameToKey: {
-    'Product ID': 'productId',
-    'Product Name': 'productName',
-    Price: 'price',
+    ['Product ID']: 'productId',
+    ['Product Name']: 'productName',
+    ['Price']: 'price',
   },
 };
 
@@ -67,12 +67,12 @@ const csvBuffer = fs.readFileSync('./data.csv');
 const csvOptions = {
   headerStartRowNumber: 1,
   bodyStartRowNumber: 2,
-  delimiter: ',', // CSV delimiter (default: ',')
-  encoding: 'utf-8', // File encoding (default: 'utf-8')
+  delimiter: ',', // CSV delimiter Optional (default: ',')
+  encoding: 'utf-8', // File encoding Optional (default: 'utf-8')
   headerNameToKey: {
-    'Product ID': 'productId',
-    'Product Name': 'productName',
-    Price: 'price',
+    ['Product ID']: 'productId',
+    ['Product Name']: 'productName',
+    ['Price']: 'price',
   },
 };
 
@@ -102,9 +102,9 @@ if (file) {
     headerStartRowNumber: 1,
     bodyStartRowNumber: 2,
     headerNameToKey: {
-      'Product ID': 'productId',
-      'Product Name': 'productName',
-      Price: 'price',
+      ['Product ID']: 'productId',
+      ['Product Name']: 'productName',
+      ['Price']: 'price',
     },
   };
 
@@ -132,12 +132,12 @@ if (file) {
   const csvOptions = {
     headerStartRowNumber: 1,
     bodyStartRowNumber: 2,
-    delimiter: ',',
-    encoding: 'utf-8',
+    delimiter: ',', // CSV delimiter Optional (default: ',')
+    encoding: 'utf-8', // File encoding Optional (default: 'utf-8')
     headerNameToKey: {
-      'Product ID': 'productId',
-      'Product Name': 'productName',
-      Price: 'price',
+      ['Product ID']: 'productId',
+      ['Product Name']: 'productName',
+      ['Price']: 'price',
     },
   };
 
@@ -145,6 +145,90 @@ if (file) {
   const result = parseCSV(arrayBuffer, csvOptions);
 
   console.log(result);
+}
+```
+
+### NestJS Example
+
+#### Complete Controller Example
+
+```typescript
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+  BadRequestException,
+} from '@nestjs/common';
+import { Express } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { parse, parseCSV, ParseResult } from 'excel-sheet-to-json';
+
+@Controller()
+export class AppController {
+  /**
+   * Convert Excel to JSON Example
+   */
+  @Post('excel-to-json')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  excelToJson(@UploadedFile() file?: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File is required.');
+    }
+
+    const fileBuffer = file.buffer; // File to Buffer
+
+    const result: ParseResult = parse(fileBuffer, {
+      headerStartRowNumber: 1,
+      bodyStartRowNumber: 2,
+      headerNameToKey: {
+        ['Product ID']: 'productId',
+        ['Product Name']: 'productName',
+        ['Barcode']: 'barcode',
+        ['Price']: 'price',
+      },
+    });
+
+    return {
+      message: 'Excel to Json',
+      data: result,
+    };
+  }
+
+  /**
+   * Convert CSV to JSON Example
+   */
+  @Post('csv-to-json')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  csvToJson(@UploadedFile() file?: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File is required.');
+    }
+
+    const fileBuffer = file.buffer; // File to Buffer
+
+    const result: ParseResult = parseCSV(fileBuffer, {
+      headerStartRowNumber: 1,
+      bodyStartRowNumber: 2,
+      delimiter: ',',
+      encoding: 'utf-8',
+      headerNameToKey: {
+        ['Product ID']: 'productId',
+        ['Product Name']: 'productName',
+        ['Barcode']: 'barcode',
+        ['Price']: 'price',
+      },
+    });
+
+    return {
+      message: 'CSV to Json',
+      data: result,
+    };
+  }
 }
 ```
 
@@ -215,12 +299,12 @@ const csvBuffer = fs.readFileSync('./data.csv');
 const result = parseCSV(csvBuffer, {
   headerStartRowNumber: 1,
   bodyStartRowNumber: 2,
-  delimiter: ',',
-  encoding: 'utf-8',
+  delimiter: ',', // CSV delimiter Optional (default: ',')
+  encoding: 'utf-8', // File encoding Optional (default: 'utf-8')
   headerNameToKey: {
-    'Product ID': 'productId',
-    'Product Name': 'productName',
-    Price: 'price',
+    ['Product ID']: 'productId',
+    ['Product Name']: 'productName',
+    ['Price']: 'price',
   },
 });
 ```
@@ -336,9 +420,9 @@ const options = {
   headerStartRowNumber: 1, // 헤더가 있는 행 번호 (1-based)
   bodyStartRowNumber: 2, // 데이터가 시작되는 행 번호 (1-based)
   headerNameToKey: {
-    상품ID: 'productId',
-    상품명칭: 'productName',
-    가격: 'price',
+    ['상품ID']: 'productId',
+    ['상품명칭']: 'productName',
+    ['가격']: 'price',
   },
 };
 
@@ -364,9 +448,9 @@ const csvOptions = {
   delimiter: ',', // CSV 구분자 (기본값: ',')
   encoding: 'utf-8', // 파일 인코딩 (기본값: 'utf-8')
   headerNameToKey: {
-    상품ID: 'productId',
-    상품명칭: 'productName',
-    가격: 'price',
+    ['상품ID']: 'productId',
+    ['상품명칭']: 'productName',
+    ['가격']: 'price',
   },
 };
 
@@ -396,9 +480,9 @@ if (file) {
     headerStartRowNumber: 1,
     bodyStartRowNumber: 2,
     headerNameToKey: {
-      상품ID: 'productId',
-      상품명칭: 'productName',
-      가격: 'price',
+      ['상품ID']: 'productId',
+      ['상품명칭']: 'productName',
+      ['가격']: 'price',
     },
   };
 
@@ -426,12 +510,12 @@ if (file) {
   const csvOptions = {
     headerStartRowNumber: 1,
     bodyStartRowNumber: 2,
-    delimiter: ',',
-    encoding: 'utf-8',
+    delimiter: ',', // (선택적) 기본값 ','
+    encoding: 'utf-8', // (선택적) 기본값 'utf-8'
     headerNameToKey: {
-      상품ID: 'productId',
-      상품명칭: 'productName',
-      가격: 'price',
+      ['상품ID']: 'productId',
+      ['상품명칭']: 'productName',
+      ['가격']: 'price',
     },
   };
 
@@ -439,6 +523,90 @@ if (file) {
   const result = parseCSV(arrayBuffer, csvOptions);
 
   console.log(result);
+}
+```
+
+### NestJS 예시
+
+#### 전체 컨트롤러 예제
+
+```typescript
+import {
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+  BadRequestException,
+} from '@nestjs/common';
+import { Express } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { parse, parseCSV, ParseResult } from 'excel-sheet-to-json';
+
+@Controller()
+export class AppController {
+  /**
+   * Excel을 JSON으로 변환하는 예제
+   */
+  @Post('excel-to-json')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  excelToJson(@UploadedFile() file?: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File is required.');
+    }
+
+    const fileBuffer = file.buffer; // File to Buffer
+
+    const result: ParseResult = parse(fileBuffer, {
+      headerStartRowNumber: 1,
+      bodyStartRowNumber: 2,
+      headerNameToKey: {
+        ['상품ID']: 'productId',
+        ['상품명칭']: 'productName',
+        ['바코드']: 'barcode',
+        ['가격']: 'price',
+      },
+    });
+
+    return {
+      message: 'Excel to Json',
+      data: result,
+    };
+  }
+
+  /**
+   * CSV를 JSON으로 변환하는 예제
+   */
+  @Post('csv-to-json')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FileInterceptor('file'))
+  csvToJson(@UploadedFile() file?: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('File is required.');
+    }
+
+    const fileBuffer = file.buffer; // File to Buffer
+
+    const result: ParseResult = parseCSV(fileBuffer, {
+      headerStartRowNumber: 1,
+      bodyStartRowNumber: 2,
+      delimiter: ',', // (선택적) 기본값 ','
+      encoding: 'utf-8', // (선택적) 기본값 'utf-8'
+      headerNameToKey: {
+        ['상품ID']: 'productId',
+        ['상품명칭']: 'productName',
+        ['바코드']: 'barcode',
+        ['가격']: 'price',
+      },
+    });
+
+    return {
+      message: 'CSV to Json',
+      data: result,
+    };
+  }
 }
 ```
 
@@ -512,9 +680,9 @@ const result = parseCSV(csvBuffer, {
   delimiter: ',',
   encoding: 'utf-8',
   headerNameToKey: {
-    상품ID: 'productId',
-    상품명칭: 'productName',
-    가격: 'price',
+    ['상품ID']: 'productId',
+    ['상품명칭']: 'productName',
+    ['가격']: 'price',
   },
 });
 ```
