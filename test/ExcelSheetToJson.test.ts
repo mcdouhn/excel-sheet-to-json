@@ -15,6 +15,7 @@ const testOptions = {
     ['상품명칭']: 'productName',
     ['가격']: 'price',
   },
+  castNumber: false,
 };
 
 describe('ExcelSheetToJson', () => {
